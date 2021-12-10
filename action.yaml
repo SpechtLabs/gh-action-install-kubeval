@@ -19,7 +19,7 @@ runs:
       shell: bash
       run: |
         tempdir=$(mktemp -d)
-        if [ "${{ input.version }}" == "latest" ]
+        if [ "${{ inputs.version }}" == "latest" ]
         then
           curl -L https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz | tar xz -C $tempdir
         else
