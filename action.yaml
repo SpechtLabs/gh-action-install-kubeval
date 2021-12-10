@@ -19,7 +19,7 @@ runs:
       shell: bash
       run: |
         tempdir=$(mktemp -d)
-        curl -L https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz | tar xz -C $tempdir
+        curl -L https://github.com/instrumenta/kubeval/releases/${{ inputs.version }}/download/kubeval-linux-amd64.tar.gz | tar xz -C $tempdir
         cp $tempdir/kubeval /usr/local/bin
         rm -r $tempdir
 
