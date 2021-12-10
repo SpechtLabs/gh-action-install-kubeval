@@ -7,38 +7,33 @@ on:
 
 jobs:
   test:
-    name: "Test KubeOne"
+    name: "Test kubeval"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         version: ["v1.3.2", "master", "v1.0.0"]
     steps:
-      - name: Kubeone
-        id: kubeone
-        uses: cedi/gh-action-kubeone@main
+      - name: Kubeval
+        id: kubeval
+        uses: cedi/gh-action-install-kubeval@main
         with:
           version: ${{ matrix.version }}
-          command: version
 
       - name: Print version
         shell: bash
-        run: echo "KubeOne Version is ${{ steps.kubeone.outputs.version }}"
+        run: echo "kubeval Version is ${{ steps.kubeval.outputs.version }}"
 
-  test2:
-    name: "Test KubeOne"
+  doubleinstall:
+    name: "Test installing twice"
     runs-on: ubuntu-latest
     steps:
-      - name: Kubeone
-        id: kubeone
-        uses: cedi/gh-action-kubeone@main
-        with:
-          command: version
+      - name: One
+        uses: cedi/gh-action-install-kubeval@main
 
-      - name: Kubeone 2nd time
-        uses: cedi/gh-action-kubeone@main
-        with:
-          command: version
+      - name: Two
+        id: kubeval
+        uses: cedi/gh-action-install-kubeval@main
 
       - name: Print version
         shell: bash
-        run: echo "KubeOne Version is ${{ steps.kubeone.outputs.version }}"
+        run: echo "kubeval Version is ${{ steps.kubeval.outputs.version }}"
