@@ -1,0 +1,31 @@
+# action.yaml
+name: 'Install kubeval'
+description: 'Use kubeval with easy from GH Actions'
+inputs:
+  version:
+    description: 'Version of kubeval to use'
+    required: false
+    default: "latest"
+
+outputs:
+  version:
+    description: "The installed KubeOne version"
+    value: ${{ steps.version.outputs.version }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Kubeval
+      shell: bash
+      run: |
+        tempdir=$(mktemp -d)
+        curl -L https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz | tar xz -C $tempdir
+        cp $tempdir/kubeval /usr/local/bin
+        rm -r $tempdir
+
+    # and collect the version number
+    - name: Extract version from Kubeone
+      id: version
+      shell: bash
+      run: |
+        echo "::set-output name=version::$(kubeval --version | grep Version | awk '{print $2}')"
